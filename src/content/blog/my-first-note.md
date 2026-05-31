@@ -13,6 +13,7 @@ draft: false
 - 学 Java 基础
 - 学 Spring Boot
 - 学 MySQL 优化
+- 学 Redis
 
 1. 先看文档
 2. 再写 demo
