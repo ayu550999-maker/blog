@@ -1,0 +1,52 @@
+---
+import SiteFooter from "@/components/SiteFooter.astro";
+import SiteHeader from "@/components/SiteHeader.astro";
+import { siteConfig } from "@/data/site";
+import { sitePath } from "@/utils/paths";
+import "@/styles/global.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+  type?: "website" | "article";
+}
+
+const {
+  title = siteConfig.name,
+  description = siteConfig.description,
+  type = "website"
+} = Astro.props;
+
+const pageTitle = title === siteConfig.name ? title : `${title} | ${siteConfig.name}`;
+const routePath = Astro.url.pathname.replace(import.meta.env.BASE_URL, "/");
+const canonical = new URL(sitePath(routePath), Astro.site ?? Astro.url.origin);
+const rssUrl = new URL(sitePath("/rss.xml"), Astro.site ?? Astro.url.origin);
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" type="application/rss+xml" title={`${siteConfig.name} RSS`} href={rssUrl} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content={type} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={siteConfig.locale} />
+    <meta name="twitter:card" content="summary" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <SiteHeader />
+      <main>
+        <slot />
+      </main>
+      <SiteFooter />
+    </div>
+  </body>
+</html>

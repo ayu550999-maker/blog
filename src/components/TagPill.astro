@@ -1,0 +1,15 @@
+---
+import { sitePath } from "@/utils/paths";
+
+interface Props {
+  tag: string;
+  count?: number;
+}
+
+const { tag, count } = Astro.props;
+---
+
+<a class="tag" href={sitePath(`/tags/${encodeURIComponent(tag)}`)}>
+  <span>{tag}</span>
+  {count !== undefined && <small>{count}</small>}
+</a>

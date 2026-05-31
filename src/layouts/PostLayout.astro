@@ -1,0 +1,64 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import TagPill from "@/components/TagPill.astro";
+import { sitePath } from "@/utils/paths";
+import { formatDate, type BlogPost } from "@/utils/posts";
+
+interface Props {
+  post: BlogPost;
+  previous?: BlogPost | null;
+  next?: BlogPost | null;
+}
+
+const { post, previous, next } = Astro.props;
+---
+
+<BaseLayout title={post.data.title} description={post.data.description} type="article">
+  <article class="article">
+    <header class="article__header">
+      <p class="eyebrow">文章</p>
+      <h1>{post.data.title}</h1>
+      <p class="article__description">{post.data.description}</p>
+      <div class="article__meta">
+        <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
+        {
+          post.data.updatedDate && (
+            <span>更新于 {formatDate(post.data.updatedDate)}</span>
+          )
+        }
+      </div>
+      {
+        post.data.tags.length > 0 && (
+          <div class="tag-row" aria-label="文章标签">
+            {post.data.tags.map((tag) => (
+              <TagPill tag={tag} />
+            ))}
+          </div>
+        )
+      }
+    </header>
+
+    <div class="prose">
+      <slot />
+    </div>
+
+    <nav class="post-nav" aria-label="文章导航">
+      <div>
+        {previous && (
+          <a href={sitePath(`/blog/${previous.slug}`)}>
+            <span>上一篇</span>
+            {previous.data.title}
+          </a>
+        )}
+      </div>
+      <div>
+        {next && (
+          <a href={sitePath(`/blog/${next.slug}`)}>
+            <span>下一篇</span>
+            {next.data.title}
+          </a>
+        )}
+      </div>
+    </nav>
+  </article>
+</BaseLayout>

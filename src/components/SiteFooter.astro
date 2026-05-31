@@ -1,0 +1,11 @@
+---
+import { siteConfig } from "@/data/site";
+import { sitePath } from "@/utils/paths";
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <p>&copy; {year} {siteConfig.author}. Built with Astro.</p>
+  <a href={sitePath("/rss.xml")}>RSS</a>
+</footer>
