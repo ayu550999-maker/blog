@@ -21,6 +21,7 @@ const pageTitle = title === siteConfig.name ? title : `${title} | ${siteConfig.n
 const canonical = new URL(sitePath(routePath(Astro.url.pathname)), Astro.site ?? Astro.url.origin);
 const rssUrl = new URL(sitePath("/rss.xml"), Astro.site ?? Astro.url.origin);
 const backgroundImage = sitePath("/images/site-background.webp");
+const faviconUrl = sitePath("/favicon.svg");
 ---
 
 <!doctype html>
@@ -31,6 +32,7 @@ const backgroundImage = sitePath("/images/site-background.webp");
     <meta name="generator" content={Astro.generator} />
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href={faviconUrl} />
     <link rel="canonical" href={canonical} />
     <link rel="alternate" type="application/rss+xml" title={`${siteConfig.name} RSS`} href={rssUrl} />
     <meta property="og:title" content={pageTitle} />
