@@ -1,8 +1,8 @@
 ---
 import { siteConfig } from "@/data/site";
-import { sitePath } from "@/utils/paths";
+import { routePath, sitePath } from "@/utils/paths";
 
-const currentPath = Astro.url.pathname.replace(import.meta.env.BASE_URL, "/");
+const currentPath = routePath(Astro.url.pathname);
 ---
 
 <header class="site-header">

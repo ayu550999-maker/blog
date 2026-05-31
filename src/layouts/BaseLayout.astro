@@ -2,7 +2,7 @@
 import SiteFooter from "@/components/SiteFooter.astro";
 import SiteHeader from "@/components/SiteHeader.astro";
 import { siteConfig } from "@/data/site";
-import { sitePath } from "@/utils/paths";
+import { routePath, sitePath } from "@/utils/paths";
 import "@/styles/global.css";
 
 interface Props {
@@ -18,8 +18,7 @@ const {
 } = Astro.props;
 
 const pageTitle = title === siteConfig.name ? title : `${title} | ${siteConfig.name}`;
-const routePath = Astro.url.pathname.replace(import.meta.env.BASE_URL, "/");
-const canonical = new URL(sitePath(routePath), Astro.site ?? Astro.url.origin);
+const canonical = new URL(sitePath(routePath(Astro.url.pathname)), Astro.site ?? Astro.url.origin);
 const rssUrl = new URL(sitePath("/rss.xml"), Astro.site ?? Astro.url.origin);
 ---
 
