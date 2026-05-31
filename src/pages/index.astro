@@ -22,17 +22,9 @@ const tags = getAllTags(posts);
     </div>
   </section>
 
-  <section class="section">
-    <div class="section__heading">
-      <h2>最新文章</h2>
-      <a href={sitePath("/blog")}>全部文章</a>
-    </div>
-    <PostList posts={latestPosts} />
-  </section>
-
   {
     tags.length > 0 && (
-      <section class="section">
+      <section class="section section--tags">
         <div class="section__heading">
           <h2>标签</h2>
         </div>
@@ -44,4 +36,12 @@ const tags = getAllTags(posts);
       </section>
     )
   }
+
+  <section class="section">
+    <div class="section__heading">
+      <h2>最新文章</h2>
+      <a href={sitePath("/blog")}>全部文章</a>
+    </div>
+    <PostList posts={latestPosts} />
+  </section>
 </BaseLayout>

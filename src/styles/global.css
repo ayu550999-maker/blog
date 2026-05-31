@@ -204,6 +204,10 @@ main {
   padding: 48px 0 28px;
 }
 
+.section--tags {
+  padding: 30px 0 8px;
+}
+
 .page-header {
   border: 1px solid var(--border);
   border-radius: 8px;
