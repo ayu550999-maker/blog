@@ -3,13 +3,16 @@ import { siteConfig } from "@/data/site";
 import { routePath, sitePath } from "@/utils/paths";
 
 const currentPath = routePath(Astro.url.pathname);
+const navItems = import.meta.env.DEV
+  ? [...siteConfig.nav, { href: "/drafts", label: "私密" }]
+  : siteConfig.nav;
 ---
 
 <header class="site-header">
   <a class="site-title" href={sitePath("/")}>{siteConfig.name}</a>
   <nav aria-label="主导航">
     {
-      siteConfig.nav.map((item) => {
+      navItems.map((item) => {
         const isActive = item.href === "/" ? currentPath === "/" : currentPath.startsWith(item.href);
         return (
           <a href={sitePath(item.href)} aria-current={isActive ? "page" : undefined}>

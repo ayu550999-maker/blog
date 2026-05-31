@@ -4,12 +4,22 @@ import { sitePath } from "@/utils/paths";
 interface Props {
   tag: string;
   count?: number;
+  linked?: boolean;
 }
 
-const { tag, count } = Astro.props;
+const { tag, count, linked = true } = Astro.props;
 ---
 
-<a class="tag" href={sitePath(`/tags/${encodeURIComponent(tag)}`)}>
-  <span>{tag}</span>
-  {count !== undefined && <small>{count}</small>}
-</a>
+{
+  linked ? (
+    <a class="tag" href={sitePath(`/tags/${encodeURIComponent(tag)}`)}>
+      <span>{tag}</span>
+      {count !== undefined && <small>{count}</small>}
+    </a>
+  ) : (
+    <span class="tag tag--static">
+      <span>{tag}</span>
+      {count !== undefined && <small>{count}</small>}
+    </span>
+  )
+}

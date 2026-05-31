@@ -2,9 +2,40 @@ import { getCollection, type CollectionEntry } from "astro:content";
 
 export type BlogPost = CollectionEntry<"blog">;
 
-export async function getPublishedPosts() {
-  const posts = await getCollection("blog", ({ data }) => !data.draft);
+export function isPrivatePost(post: BlogPost) {
+  return post.data.visibility === "private" || post.data.draft;
+}
+
+export function getPostVisibility(post: BlogPost) {
+  return isPrivatePost(post) ? "private" : "public";
+}
+
+function sortByNewest(posts: BlogPost[]) {
   return posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+}
+
+export async function getPublishedPosts() {
+  const posts = await getCollection("blog", (post) => !isPrivatePost(post));
+  return sortByNewest(posts);
+}
+
+export async function getPrivatePosts() {
+  if (!import.meta.env.DEV) {
+    return [];
+  }
+
+  const posts = await getCollection("blog", (post) => isPrivatePost(post));
+  return sortByNewest(posts);
+}
+
+export async function getLocalVisiblePosts() {
+  const publicPosts = await getPublishedPosts();
+  if (!import.meta.env.DEV) {
+    return publicPosts;
+  }
+
+  const privatePosts = await getPrivatePosts();
+  return sortByNewest([...publicPosts, ...privatePosts]);
 }
 
 export function formatDate(date: Date) {

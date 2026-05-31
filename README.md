@@ -22,13 +22,44 @@ description: "一句话摘要"
 pubDate: "2026-05-31"
 updatedDate: "2026-06-01"
 tags: ["技术", "随笔"]
+visibility: "public"
 draft: false
 ---
 
 正文内容。
 ```
 
-`draft: true` 的文章不会发布。
+`visibility: "public"` 的文章会发布到线上。
+
+## 私密文章
+
+私密文章只在本地可见，不会发布到 GitHub Pages。
+
+在 `src/content/blog/private/` 目录里新建 Markdown 文件：
+
+```md
+---
+title: "私密笔记"
+description: "这篇文章只在本地预览。"
+pubDate: "2026-05-31"
+tags: ["私密", "草稿"]
+visibility: "private"
+---
+
+这里写只有自己看的内容。
+```
+
+本地运行后打开：
+
+```bash
+npm run dev
+```
+
+然后访问 `/drafts` 查看私密文章。
+
+注意：`src/content/blog/private/` 已加入 `.gitignore`，不要把私密文章提交到公开仓库。
+
+旧写法 `draft: true` 也会被当作私密文章处理。
 
 ## 个性化
 

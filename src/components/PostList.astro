@@ -1,21 +1,31 @@
 ---
 import TagPill from "@/components/TagPill.astro";
 import { sitePath } from "@/utils/paths";
-import { formatDate, type BlogPost } from "@/utils/posts";
+import { formatDate, getPostVisibility, type BlogPost } from "@/utils/posts";
 
 interface Props {
   posts: BlogPost[];
+  showVisibility?: boolean;
 }
 
-const { posts } = Astro.props;
+const { posts, showVisibility = false } = Astro.props;
 ---
 
 <div class="post-list">
   {
-    posts.map((post) => (
-      <article class="post-preview">
+    posts.map((post) => {
+      const visibility = getPostVisibility(post);
+      const isPrivate = visibility === "private";
+
+      return (
+      <article class:list={["post-preview", { "post-preview--private": isPrivate }]}>
         <div class="post-preview__meta">
           <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
+          {showVisibility && (
+            <span class:list={["status-badge", isPrivate ? "status-badge--private" : "status-badge--public"]}>
+              {isPrivate ? "仅本地可见" : "公开"}
+            </span>
+          )}
         </div>
         <h2>
           <a href={sitePath(`/blog/${post.slug}`)}>{post.data.title}</a>
@@ -24,11 +34,12 @@ const { posts } = Astro.props;
         {post.data.tags.length > 0 && (
           <div class="tag-row" aria-label="文章标签">
             {post.data.tags.map((tag) => (
-              <TagPill tag={tag} />
+              <TagPill tag={tag} linked={!isPrivate} />
             ))}
           </div>
         )}
       </article>
-    ))
+      );
+    })
   }
 </div>

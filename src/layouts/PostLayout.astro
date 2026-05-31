@@ -2,7 +2,7 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import TagPill from "@/components/TagPill.astro";
 import { sitePath } from "@/utils/paths";
-import { formatDate, type BlogPost } from "@/utils/posts";
+import { formatDate, getPostVisibility, type BlogPost } from "@/utils/posts";
 
 interface Props {
   post: BlogPost;
@@ -11,16 +11,28 @@ interface Props {
 }
 
 const { post, previous, next } = Astro.props;
+const isPrivate = getPostVisibility(post) === "private";
 ---
 
 <BaseLayout title={post.data.title} description={post.data.description} type="article">
-  <article class="article">
+  <article class:list={["article", { "article--private": isPrivate }]}>
     <header class="article__header">
-      <p class="eyebrow">文章</p>
+      <p class="eyebrow">{isPrivate ? "私密文章" : "文章"}</p>
+      {
+        isPrivate && (
+          <div class="private-notice">
+            <strong>仅本地可见</strong>
+            <span>这篇文章不会发布到 GitHub Pages，也不会出现在 RSS 或线上列表中。</span>
+          </div>
+        )
+      }
       <h1>{post.data.title}</h1>
       <p class="article__description">{post.data.description}</p>
       <div class="article__meta">
         <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
+        <span class:list={["status-badge", isPrivate ? "status-badge--private" : "status-badge--public"]}>
+          {isPrivate ? "仅本地可见" : "公开"}
+        </span>
         {
           post.data.updatedDate && (
             <span>更新于 {formatDate(post.data.updatedDate)}</span>
@@ -31,7 +43,7 @@ const { post, previous, next } = Astro.props;
         post.data.tags.length > 0 && (
           <div class="tag-row" aria-label="文章标签">
             {post.data.tags.map((tag) => (
-              <TagPill tag={tag} />
+              <TagPill tag={tag} linked={!isPrivate} />
             ))}
           </div>
         )

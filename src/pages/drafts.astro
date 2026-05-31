@@ -1,0 +1,51 @@
+---
+import PostList from "@/components/PostList.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getPrivatePosts } from "@/utils/posts";
+
+const privatePosts = await getPrivatePosts();
+const isLocal = import.meta.env.DEV;
+---
+
+<BaseLayout title="私密文章" description="仅本地开发环境可见的私密文章。">
+  <section class="page-header page-header--private">
+    <p class="eyebrow">Local only</p>
+    <h1>私密文章</h1>
+    {
+      isLocal ? (
+        <p>
+          这里展示本地私密文章。它们不会发布到 GitHub Pages，也不会进入 RSS、标签页或线上文章列表。
+        </p>
+      ) : (
+        <p>私密文章只在本地开发环境可见，线上站点不会展示内容。</p>
+      )
+    }
+  </section>
+
+  {
+    isLocal && privatePosts.length > 0 && (
+      <PostList posts={privatePosts} showVisibility />
+    )
+  }
+
+  {
+    isLocal && privatePosts.length === 0 && (
+      <div class="empty-state">
+        <h2>还没有私密文章</h2>
+        <p>
+          在 <code>src/content/blog/private/</code> 下新建 Markdown 文件，并设置
+          <code>visibility: "private"</code>。
+        </p>
+      </div>
+    )
+  }
+
+  {
+    !isLocal && (
+      <div class="empty-state empty-state--private">
+        <h2>线上不可见</h2>
+        <p>这个页面不会展示任何私密文章内容。</p>
+      </div>
+    )
+  }
+</BaseLayout>
