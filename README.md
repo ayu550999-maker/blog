@@ -66,6 +66,9 @@ npm run dev
 - 站点名称、作者、简介：修改 `src/data/site.ts`
 - 关于页面：修改 `src/pages/about.astro`
 - 全局样式：修改 `src/styles/global.css`
+- 全站背景图：替换 `public/images/site-background.webp`
+
+当前背景图来源：[Pexels - Forests and Mist](https://www.pexels.com/photo/forests-and-mist-12366058/)，按 [Pexels License](https://www.pexels.com/license/) 可免费使用和修改。
 
 ## 部署到 GitHub Pages
 

@@ -20,6 +20,7 @@ const {
 const pageTitle = title === siteConfig.name ? title : `${title} | ${siteConfig.name}`;
 const canonical = new URL(sitePath(routePath(Astro.url.pathname)), Astro.site ?? Astro.url.origin);
 const rssUrl = new URL(sitePath("/rss.xml"), Astro.site ?? Astro.url.origin);
+const backgroundImage = sitePath("/images/site-background.webp");
 ---
 
 <!doctype html>
@@ -39,7 +40,7 @@ const rssUrl = new URL(sitePath("/rss.xml"), Astro.site ?? Astro.url.origin);
     <meta property="og:locale" content={siteConfig.locale} />
     <meta name="twitter:card" content="summary" />
   </head>
-  <body>
+  <body style={`--site-bg-image: url("${backgroundImage}");`}>
     <div class="page-shell">
       <SiteHeader />
       <main>

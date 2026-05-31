@@ -1,18 +1,20 @@
 :root {
   color-scheme: light dark;
   --bg: #fbfaf8;
-  --surface: #ffffff;
-  --surface-muted: #f5f7f8;
+  --bg-wash: linear-gradient(180deg, rgb(251 250 248 / 92%), rgb(245 247 248 / 88%));
+  --surface: rgb(255 255 255 / 88%);
+  --surface-muted: rgb(245 247 248 / 82%);
   --text: #1f2328;
   --muted: #65707a;
-  --border: #d9dee3;
+  --border: rgb(217 222 227 / 86%);
   --accent: #0f766e;
   --accent-strong: #134e4a;
-  --code-bg: #f0f3f5;
-  --private-bg: #fff7ed;
+  --code-bg: rgb(240 243 245 / 92%);
+  --private-bg: rgb(255 247 237 / 90%);
   --private-border: #fdba74;
   --private-text: #9a3412;
-  --shadow: 0 10px 30px rgb(31 35 40 / 7%);
+  --shadow: 0 16px 45px rgb(31 35 40 / 10%);
+  --site-bg-image: none;
   font-family:
     ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
     sans-serif;
@@ -21,15 +23,16 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --bg: #111315;
-    --surface: #171a1d;
-    --surface-muted: #1d2226;
+    --bg-wash: linear-gradient(180deg, rgb(13 17 18 / 92%), rgb(13 17 18 / 95%));
+    --surface: rgb(23 26 29 / 88%);
+    --surface-muted: rgb(29 34 38 / 82%);
     --text: #e7e9ea;
     --muted: #a2abb3;
-    --border: #30363d;
+    --border: rgb(48 54 61 / 90%);
     --accent: #5eead4;
     --accent-strong: #99f6e4;
-    --code-bg: #22262a;
-    --private-bg: #2a1d14;
+    --code-bg: rgb(34 38 42 / 92%);
+    --private-bg: rgb(42 29 20 / 90%);
     --private-border: #9a5a22;
     --private-text: #fed7aa;
     --shadow: none;
@@ -42,7 +45,17 @@
 
 body {
   margin: 0;
-  background: var(--bg);
+  min-height: 100vh;
+  background-color: var(--bg);
+  background-image: var(--bg-wash), var(--site-bg-image);
+  background-attachment: scroll, fixed;
+  background-position:
+    center top,
+    center center;
+  background-repeat: no-repeat;
+  background-size:
+    cover,
+    cover;
   color: var(--text);
   font-size: 17px;
   line-height: 1.72;
@@ -71,6 +84,10 @@ img {
   margin: 0 auto;
 }
 
+main {
+  min-height: calc(100vh - 180px);
+}
+
 .site-header,
 .site-footer {
   display: flex;
@@ -81,6 +98,7 @@ img {
 }
 
 .site-title {
+  color: var(--text);
   font-weight: 750;
   text-decoration: none;
 }
@@ -115,8 +133,13 @@ img {
 }
 
 .hero {
-  padding: 64px 0 48px;
-  border-bottom: 1px solid var(--border);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  margin-top: 24px;
+  padding: 44px;
+  backdrop-filter: blur(18px);
 }
 
 .hero h1,
@@ -182,8 +205,13 @@ img {
 }
 
 .page-header {
-  border-bottom: 1px solid var(--border);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
   margin-bottom: 24px;
+  padding: 34px;
+  backdrop-filter: blur(18px);
 }
 
 .page-header--private {
@@ -228,6 +256,7 @@ img {
   background: var(--surface);
   box-shadow: var(--shadow);
   padding: 22px;
+  backdrop-filter: blur(18px);
   transition:
     border-color 160ms ease,
     transform 160ms ease;
@@ -321,7 +350,13 @@ img {
 
 .article {
   max-width: 760px;
-  margin: 0 auto;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  margin: 28px auto 0;
+  padding: 40px;
+  backdrop-filter: blur(18px);
 }
 
 .article--private .article__header {
@@ -331,6 +366,7 @@ img {
 .article__header {
   border-bottom: 1px solid var(--border);
   margin-bottom: 34px;
+  padding-top: 0;
 }
 
 .private-notice,
@@ -390,6 +426,11 @@ img {
   margin-top: 2em;
 }
 
+.prose h2:first-child,
+.prose h3:first-child {
+  margin-top: 0;
+}
+
 .prose h2 {
   border-bottom: 1px solid var(--border);
   padding-bottom: 0.28em;
@@ -398,6 +439,15 @@ img {
 .prose p,
 .prose li {
   color: color-mix(in srgb, var(--text), var(--muted) 18%);
+}
+
+.prose ul,
+.prose ol {
+  padding-left: 1.35em;
+}
+
+.prose li + li {
+  margin-top: 0.35em;
 }
 
 .prose code {
@@ -412,6 +462,7 @@ img {
   border: 1px solid var(--border);
   border-radius: 8px;
   background: color-mix(in srgb, var(--code-bg), black 2%);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 10%);
   padding: 18px;
 }
 
@@ -422,9 +473,11 @@ img {
 
 .prose blockquote {
   border-left: 3px solid var(--accent);
+  background: color-mix(in srgb, var(--surface-muted), transparent 18%);
+  border-radius: 0 8px 8px 0;
   color: var(--muted);
   margin-left: 0;
-  padding-left: 18px;
+  padding: 10px 0 10px 18px;
 }
 
 .prose table {
@@ -432,6 +485,7 @@ img {
   width: 100%;
   overflow-x: auto;
   border-collapse: collapse;
+  border-radius: 8px;
 }
 
 .prose th,
@@ -471,6 +525,7 @@ img {
 
 @media (max-width: 640px) {
   body {
+    background-attachment: scroll, scroll;
     font-size: 16px;
   }
 
@@ -487,6 +542,14 @@ img {
 
   .hero {
     padding-top: 48px;
+    padding-right: 22px;
+    padding-left: 22px;
+  }
+
+  .page-header,
+  .article {
+    padding-right: 22px;
+    padding-left: 22px;
   }
 
   .post-preview {
