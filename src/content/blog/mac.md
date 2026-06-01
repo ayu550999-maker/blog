@@ -1,9 +1,12 @@
 ---
 title: "Mac常用开发命令速查表文档"
 pubDate: "2026-06-01"
+description: "Mac常用开发命令速查表文档"
 tags: ["技术", "博客"]
 draft: false
 ---
+
+
 # Mac 常用开发命令速查表
 
 ## 1. 文件和目录操作
