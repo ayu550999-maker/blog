@@ -29,7 +29,7 @@ draft: false
 正文内容。
 ```
 
-`visibility: "public"` 的文章会发布到线上。
+`visibility: "public"` 的文章会发布到线上..。
 
 ## 私密文章
 
